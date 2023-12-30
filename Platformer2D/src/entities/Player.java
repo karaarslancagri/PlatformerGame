@@ -12,6 +12,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import utilz.LoadSave;
+
 public class Player extends Entity {
 
 	private BufferedImage[][] animations;
@@ -21,7 +23,7 @@ public class Player extends Entity {
 	private boolean left, up, right, down;
 	private float playerSpeed = 2.0f;
 
-	public Player(float x, float y) {
+	public Player(int x, int y) {
 		super(x, y);
 		loadAnimations();
 	}
@@ -95,23 +97,14 @@ public class Player extends Entity {
 
 	private void loadAnimations() {
 
-		InputStream is = getClass().getResourceAsStream("/player_sprites.png");
-		try {
-			BufferedImage img = ImageIO.read(is);
+			BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+			
 			animations = new BufferedImage[9][6];
 			for (int j = 0; j < animations.length; j++)
 				for (int i = 0; i < animations[j].length; i++)
 					animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				is.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		
 	}
 
 	public void resetDirBooleans() {
