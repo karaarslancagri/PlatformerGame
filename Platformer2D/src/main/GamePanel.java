@@ -21,15 +21,13 @@ public class GamePanel extends JPanel {
 	private float xDelta = 100, yDelta = 100;
 	private BufferedImage img;
 	private BufferedImage[][] animations;
-	private int aniTick, aniIndex, aniSpeed = 15;
+	private int aniTick, aniIndex, aniSpeed = 25;
 	private int playerAction = IDLE;
 	private int playerDir = -1;
 	private boolean moving = false;
 
 	public GamePanel() {
-
 		mouseInputs = new MouseInputs(this);
-
 		importImg();
 		loadAnimations();
 
@@ -41,7 +39,6 @@ public class GamePanel extends JPanel {
 
 	private void loadAnimations() {
 		animations = new BufferedImage[9][6];
-
 		for (int j = 0; j < animations.length; j++)
 			for (int i = 0; i < animations[j].length; i++)
 				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
@@ -65,9 +62,7 @@ public class GamePanel extends JPanel {
 
 	private void setPanelSize() {
 		Dimension size = new Dimension(1280, 800);
-		setMinimumSize(size);
 		setPreferredSize(size);
-		setMaximumSize(size);
 
 	}
 
@@ -93,7 +88,6 @@ public class GamePanel extends JPanel {
 	}
 
 	private void setAnimation() {
-
 		if (moving)
 			playerAction = RUNNING;
 		else
@@ -102,33 +96,35 @@ public class GamePanel extends JPanel {
 	}
 
 	private void updatePos() {
-
 		if (moving) {
 			switch (playerDir) {
 			case LEFT:
-				xDelta -= 5;
+				xDelta -= 2;
 				break;
 			case UP:
-				yDelta -= 5;
+				yDelta -= 2;
 				break;
 			case RIGHT:
-				xDelta += 5;
+				xDelta += 2;
 				break;
 			case DOWN:
-				yDelta += 5;
+				yDelta += 2;
 				break;
 			}
 		}
 
 	}
-
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	
+	public void updateGame() {
 		updateAnimationTick();
-
 		setAnimation();
 		updatePos();
+	}
+	
 
+	public void paintComponent(Graphics g) {
+		
+		super.paintComponent(g);
 		g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 256, 160, null);
 
 	}
